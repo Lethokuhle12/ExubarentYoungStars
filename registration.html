@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="css/tutorsStyle2.css">
+    <link rel="icon" href="ESt Logo white(1).png" type="image/x-icon">
+</head>
+<body>
+    <section id="registration">
+        <div class="container">
+            <h2>Student Registration</h2>
+			
+            <form action="https://script.google.com/macros/s/AKfycbzFywwfQpb1RNURXVQqxuBZX5I0nSYM-gqp2IZcgyYvRexH3LCAIuMnmq8iMOb-cZo9/exec" method="POST" id="registrationForm">
+
+                <div class="form-group">
+                    <label for="studentName">Student Name:</label>
+                    <input type="text" id="studentName" name="studentName" placeholder="Enter first name" required>
+                </div>
+				
+				
+                <div class="form-group">
+                    <label for="studentSurname">Surname:</label>
+                    <input type="text" id="studentSurname" name="studentSurname" placeholder="Enter surname" required>
+                </div>
+				
+				
+                <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required>
+                    <span id="dob-error" style="color: red; display: none;">You must be at least 12 years old to register.</span>
+                </div>
+				
+				
+                <div class="form-group">
+                    <label for="schoolName">School Name:</label>
+                    <input type="text" id="schoolName" name="schoolName" placeholder="Enter school name" required>
+                </div>
+				
+				
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter phone number" 
+                      pattern="^(?:\+27|0)[6-8][0-9]{8}$" 
+                      title="Enter a valid South African phone number starting with +27 or 0, e.g., +27831234567 or 0831234567" 
+                      required>
+                </div>
+				
+				
+				<div class="form-group">
+                    <label for="altPhone">Alt Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter phone number" 
+                      pattern="^(?:\+27|0)[6-8][0-9]{8}$" 
+                      title="Enter a valid South African phone number eg, +27831234567 or 0831234567" 
+                      required>
+                </div>
+
+				
+				
+                <div class="form-group">
+                    <label for="homeAddress">Home Address:</label>
+                    <textarea id="homeAddress" name="homeAddress" placeholder="Enter home address" required></textarea>
+                </div>
+				
+				
+                <div class="form-group">
+                    <label for="postalAddress">Postal Address:</label>
+                    <textarea id="postalAddress" name="postalAddress" placeholder="Enter postal address"></textarea>
+                    
+					<div class="checkbox-group">
+                        <input type="checkbox" id="sameAsHome" name="sameAsHome">
+                        <label for="sameAsHome">Same as Home Address</label>
+                    </div>
+					
+                </div>
+                    <div class="form-group">
+                        <label for="grade">Grade:</label>
+                        <select id="grade" name="grade" required>
+						
+                              <option value="" disabled selected>Select Grade</option>
+                              <option value="Grade 8">Grade 8</option>
+                              <option value="Grade 9">Grade 9</option>
+                              <option value="Grade 10">Grade 10</option>
+                              <option value="Grade 11">Grade 11</option>
+                              <option value="Grade 12">Grade 12</option>
+							  
+                    </select>
+					
+					
+                </div>
+                <div class="form-group">
+                    <label>Select Subjects (maximum 4):</label>
+                    <div class="checkbox-group" id="subjectsContainer">
+                        <!-- Subjects will be dynamically loaded here -->
+                    </div>
+                </div>
+                <!-- Hidden input field to store selected subjects -->
+                <input type="hidden" id="selectedSubjects" name="subjectsString">
+
+                <button type="submit"  onclick="validateDOB(event)" >Register</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        const subjectsForGrades = {
+            "Grade 8": ["English", "Natural Science", "Economics & Management Science", "Maths"],
+            "Grade 9": ["English", "Natural Science", "Economics And Management Science", "Maths"],
+            "default": ["Physical Science", "Pure Mathematics", "Maths Literacy", "Geography", "Life Science", "History", "Tourism", "Accounting", "Economics","Business"]
+        };
+
+        const gradeDropdown = document.getElementById("grade");
+        const subjectsContainer = document.getElementById("subjectsContainer");
+        const selectedSubjectsField = document.getElementById("selectedSubjects");
+        const maxSelection = 4;
+
+        // Function to load subjects as checkboxes
+        function loadSubjects(subjects) {
+		
+            subjectsContainer.innerHTML = ""; // Clear previous subjects
+            subjects.forEach(subject => {
+                const label = document.createElement("label");
+                const checkbox = document.createElement("input");
+				const defaultSelectedSubjects = ["English", "Natural Science", "Economics & Management Science", "Maths"]
+                checkbox.type = "checkbox";
+                checkbox.name = "subjects";
+                checkbox.value = subject;
+				
+				// Automatically check the box if the subject is in the defaultSelectedSubjects array
+               if (defaultSelectedSubjects.includes(subject)) {
+                     checkbox.checked = true;
+                     }
+					
+					 
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(` ${subject}`));
+                subjectsContainer.appendChild(label);
+                subjectsContainer.appendChild(document.createElement("br"));
+            });
+
+            const checkboxes = subjectsContainer.querySelectorAll('input[name="subjects"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedSubjects);
+            });
+        }
+
+        // Function to update the hidden input field with selected subjects
+        function updateSelectedSubjects() 
+		{
+            const selectedSubjects = Array.from(subjectsContainer.querySelectorAll('input[name="subjects"]:checked'))
+                .map(checkbox => checkbox.value);
+            selectedSubjectsField.value = selectedSubjects.join(", ");
+			
+            if (selectedSubjects.length > maxSelection) {
+                alert(`You can only select up to ${maxSelection} subjects.`);
+                this.checked = false; // Uncheck the last selection
+                updateSelectedSubjects(); // Recalculate
+            }
+        }
+
+        // Event listener for grade dropdown
+        gradeDropdown.addEventListener("change", () => {
+            const selectedGrade = gradeDropdown.value;
+            const subjects = subjectsForGrades[selectedGrade] || subjectsForGrades["default"];
+            loadSubjects(subjects);
+        });
+
+        // Load default subjects on page load
+        loadSubjects(subjectsForGrades["default"]);
+		function updateSelectedSubjects() {
+    const selectedSubjects = Array.from(subjectsContainer.querySelectorAll('input[name="subjects"]:checked'))
+        .map(checkbox => checkbox.value);
+    selectedSubjectsField.value = selectedSubjects.join(", ");
+    console.log(selectedSubjectsField.value);  // Log the value to check
+    if (selectedSubjects.length > maxSelection) {
+        alert(`You can only select up to ${maxSelection} subjects.`);
+        this.checked = false; // Uncheck the last selection
+        updateSelectedSubjects(); // Recalculate
+    }
+}
+
+function validateDOB(event) {
+    const dobInput = document.getElementById("dob");
+    const dobError = document.getElementById("dob-error");
+    const dob = new Date(dobInput.value);
+    const today = new Date();
+    const age = today.getFullYear() - dob.getFullYear();
+    const monthDifference = today.getMonth() - dob.getMonth();
+    const dayDifference = today.getDate() - dob.getDate();
+
+    // Adjust age if birth month/day hasn't occurred yet this year
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+        age--;
+    }
+
+    if (age < 12) {
+        dobError.style.display = "block";
+        event.preventDefault(); // Prevent form submission
+    } else {
+        dobError.style.display = "none";
+        // Allow form submission
+    }
+  }
+
+
+        document.getElementById("phone").addEventListener("input", function () {
+            const phoneInput = this.value;
+            const saPhonePattern = /^(?:\+27|0)[6-8][0-9]{8}$/;
+              if (!saPhonePattern.test(phoneInput))
+			     {
+                   this.setCustomValidity("Please enter a valid South African phone number.");
+                 }
+		      else {
+                       this.setCustomValidity(""); // Clear error
+                   }
+                   });
+			
+			
+	 document.getElementById("altPhone").addEventListener("input", function () {
+            const phoneInput = this.value;
+            const saPhonePattern = /^(?:\+27|0)[6-8][0-9]{8}$/;
+              if (!saPhonePattern.test(phoneInput))
+			     {
+                   this.setCustomValidity("Please enter a valid South African phone number.");
+                 }
+		      else {
+                       this.setCustomValidity(""); // Clear error
+                   }
+                   });
+    </script>
+</body>
+</html>
