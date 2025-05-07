@@ -1,0 +1,14 @@
+com\letho\repository\ResidenceRepository.class
+com\letho\model\Room.class
+com\letho\repository\PaymentRepository.class
+com\letho\repository\DocumentRepository.class
+com\letho\model\Entity.class
+com\letho\controller\ApplicationController.class
+com\letho\repository\UserApplicationRepository.class
+com\letho\model\Booking.class
+com\letho\myproject\MyprojectApplication.class
+com\letho\model\Payment.class
+com\letho\model\UserApplication.class
+com\letho\model\Residence.class
+com\letho\model\Document.class
+com\letho\service\ApplicationService.class

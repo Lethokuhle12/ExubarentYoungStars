@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirm Booking</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #a78bfa, #c084fc, #f0abfc);
+    }
+
+    header {
+      background-color: #6b21a8;
+      padding: 15px 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav ul li {
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #facc15;
+    }
+
+    main {
+      background: white;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #6b21a8;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .icon {
+      display: block;
+      margin: 0 auto 20px;
+      width: 80px;
+    }
+
+    p.description {
+      color: #4c1d95;
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #4c1d95;
+      margin-bottom: 5px;
+    }
+
+    select, input[type="text"], input[type="date"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      outline-color: #6b21a8;
+    }
+
+    button {
+      padding: 12px;
+      font-size: 16px;
+      background-color: #6b21a8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #7e22ce;
+    }
+
+    .info-box {
+      background-color: #f3e8ff;
+      border-left: 6px solid #a855f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 30px;
+      color: #4c1d95;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #6b21a8;
+      color: white;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <ul>
+          <li><a href="home.html">Home</a></li>
+        </ul>
+  </nav>
+  </header>
+
+  <main>
+    <img src="icon.png" alt="Confirm Icon" class="icon">
+    <h1>Confirm Your Booking</h1>
+    <p class="description">Please review your details and confirm your residence booking below.</p>
+
+    <form action="/api/application/confirm-booking" method="POST">
+      <div>
+        <label for="studentNumber">Student Number</label>
+        <input type="text" id="studentNumber" name="studentNumber" required>
+      </div>
+
+      <div>
+        <label for="residence">Select Residence</label>
+        <select id="residence" name="residence" required>
+          <option value="">-- Choose Residence --</option>
+          <option>Kwena Residence</option>
+          <option>Legae Residence</option>
+          <option>Varsity Lodge</option>
+          <option>Hilltop Heights</option>
+          <option>TUT Village</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="bookingDate">Booking Date</label>
+        <input type="date" id="bookingDate" name="bookingDate" required>
+      </div>
+
+      <div>
+        <button type="submit">Confirm Booking</button>
+      </div>
+    </form>
+
+    <div class="info-box">
+      <strong>Important:</strong>
+      <ul>
+        <li
